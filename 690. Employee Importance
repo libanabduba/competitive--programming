@@ -1,0 +1,39 @@
+"""
+# Definition for Employee.
+class Employee:
+    def __init__(self, id: int, importance: int, subordinates: List[int]):
+        self.id = id
+        self.importance = importance
+        self.subordinates = subordinates
+"""
+
+class Solution:
+    def getImportance(self, employees: List['Employee'], id: int) -> int:
+
+       
+        dic = {}
+
+        for employee in employees:
+            dic[employee.id] = employee
+        
+
+        parent = None
+        for employee in employees:
+            if employee.id == id:
+                parent = employee
+                break
+                       
+        def dfs(employee,sum):
+            if employee == None:
+                return sum
+            
+            sum += employee.importance
+            
+            for i in employee.subordinates:
+                sum = dfs(dic[i],sum)
+                        
+            return sum
+        
+        ans = dfs(parent,0)
+        return ans
+
