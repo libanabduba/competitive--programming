@@ -1,0 +1,41 @@
+class Solution:
+    def shoppingOffers(self, price: List[int], special: List[List[int]], needs: List[int]) -> int:
+
+
+        n = len(price)
+        memo = {}
+
+        def dp(needs):
+            if needs in memo:
+                return memo[needs]
+
+            needList = list(needs)
+
+            res = sum(needList[i] * price[i] for i in range(n))
+
+            
+
+            for s in special:
+                flag = True
+
+                for i in range(n):
+                    needList[i] -= s[i]
+
+                    if needList[i] < 0:
+                        flag = False
+
+                if flag:
+                    res = min(res, s[-1] + dp(tuple(needList)))  
+
+                for i in range(n):
+             
+                   needList[i] += s[i]
+
+            memo[tuple(needList)] = res
+
+            return res
+
+        
+
+        return dp(tuple(needs))
+
